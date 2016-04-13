@@ -56,11 +56,11 @@ public class Trip extends javax.swing.JFrame {
         Find_Button = new javax.swing.JButton();
         FindBy_DropList = new javax.swing.JComboBox();
         SortByLabel = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        Table = new javax.swing.JTable();
         Create_Button = new javax.swing.JButton();
         Update_Button = new javax.swing.JButton();
         Delete_Button = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        Table = new javax.swing.JTable();
         close = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -91,8 +91,30 @@ public class Trip extends javax.swing.JFrame {
 
         SortByLabel.setText("Sort by:");
 
+        Create_Button.setText("Create Trip");
+        Create_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Create_ButtonActionPerformed(evt);
+            }
+        });
+
+        Update_Button.setText("Update Trip");
+        Update_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Update_ButtonActionPerformed(evt);
+            }
+        });
+
+        Delete_Button.setText("Delete Trip");
+        Delete_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Delete_ButtonActionPerformed(evt);
+            }
+        });
+
         Table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+                {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
@@ -115,27 +137,6 @@ public class Trip extends javax.swing.JFrame {
             }
         ));
         jScrollPane2.setViewportView(Table);
-
-        Create_Button.setText("Create Trip");
-        Create_Button.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Create_ButtonActionPerformed(evt);
-            }
-        });
-
-        Update_Button.setText("Update Trip");
-        Update_Button.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Update_ButtonActionPerformed(evt);
-            }
-        });
-
-        Delete_Button.setText("Delete Trip");
-        Delete_Button.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Delete_ButtonActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -164,13 +165,11 @@ public class Trip extends javax.swing.JFrame {
                                     .addComponent(FindBy_DropList, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 906, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(Number_Label, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(Number_TextField, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(Number_Label, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(Number_TextField, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 518, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 906, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -195,8 +194,8 @@ public class Trip extends javax.swing.JFrame {
                     .addComponent(Update_Button)
                     .addComponent(Delete_Button))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         close.setText("close");
@@ -240,7 +239,7 @@ public class Trip extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void Find_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Find_ButtonActionPerformed
-        FindTrip();
+        Find();
     }//GEN-LAST:event_Find_ButtonActionPerformed
 
     private void FindBy_DropListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FindBy_DropListActionPerformed
@@ -258,7 +257,7 @@ public class Trip extends javax.swing.JFrame {
         this.Table.setModel(new DefaultTableModel());
     }//GEN-LAST:event_FindBy_DropListActionPerformed
 
-    public void FindTrip() {
+    public void Find() {
        
         DefaultTableModel tm = new DefaultTableModel();
         
@@ -273,7 +272,7 @@ public class Trip extends javax.swing.JFrame {
         
         ArrayList values = new ArrayList();
         
-        for(int i = 0; i< 15; i++)
+        for(int i = 0; i< this.Table.getColumnCount()+1; i++)
         { values.add(""); }
         
         cu.setVariables(values);
@@ -305,8 +304,8 @@ public class Trip extends javax.swing.JFrame {
 
     private void Delete_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Delete_ButtonActionPerformed
         int row = this.Table.getSelectedRow();
-        conn.deleteSelection("trip", this.Table.getValueAt(row, 0).toString());
-        FindTrip();
+        conn.Delete("trip", this.Table.getValueAt(row, 0).toString());
+        Find();
     }//GEN-LAST:event_Delete_ButtonActionPerformed
 
     private void closeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeActionPerformed

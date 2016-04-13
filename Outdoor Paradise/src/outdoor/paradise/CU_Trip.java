@@ -239,10 +239,10 @@ public class CU_Trip extends javax.swing.JFrame {
         
         values = getValues(values);
         
-        if(conn.updateSelection("trip", number, values))
+        if(conn.Update("trip", number, values))
         {
             this.setVisible(false);
-            trip.FindTrip();
+            trip.Find();
         }
         
     }//GEN-LAST:event_UpdateActionPerformed
@@ -253,10 +253,10 @@ public class CU_Trip extends javax.swing.JFrame {
         
         values = getValues(values);
         
-        if(conn.CreateSelection("trip", values))
+        if(conn.Create("trip", values))
         {
             this.setVisible(false);
-            trip.FindTrip();
+            trip.Find();
         }
         
     }//GEN-LAST:event_CreateActionPerformed

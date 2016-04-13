@@ -203,14 +203,14 @@ public class Employee extends javax.swing.JFrame {
     }//GEN-LAST:event_FindBy_DropListActionPerformed
 
     private void Find_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Find_ButtonActionPerformed
-        FindCoworker();
+        Find();
     }//GEN-LAST:event_Find_ButtonActionPerformed
 
     private void closeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_closeActionPerformed
     
-    public void FindCoworker() {
+    public void Find() {
        
         DefaultTableModel tm = new DefaultTableModel();
         

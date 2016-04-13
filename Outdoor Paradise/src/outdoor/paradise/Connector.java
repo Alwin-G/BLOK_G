@@ -8,16 +8,16 @@ import java.util.ArrayList;
 
 public class Connector {
     //Connectieinfo Alwin
-    //String url = "jdbc:sqlserver://localhost; DatabaseName = outdoor_paradise";
-    //String login = "sa";
-    //String pass = "root";
-    //String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    String url = "jdbc:sqlserver://localhost; DatabaseName = outdoor_paradise";
+    String login = "sa";
+    String pass = "root";
+    String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     
     //Connectieinfo Hans
-    String url = "jdbc:sqlserver://LENOVO-PC:1433; DatabaseName = outdoor_paradise";
+    /*String url = "jdbc:sqlserver://LENOVO-PC:1433; DatabaseName = outdoor_paradise";
     String login = "sa";
     String pass = "admin";
-    String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";*/
     
     public DefaultTableModel GetEmployee(String variable, String search) {
         
@@ -26,19 +26,19 @@ public class Connector {
         if(search.equals("id")) {
             
             if(variable.isEmpty())
-            { return searchData(getItems + "FROM employee JOIN \"user\" ON employee.user_id = \"user\".id ORDER BY \"user\".id"); }
+            { return Search(getItems + "FROM employee JOIN \"user\" ON employee.user_id = \"user\".id ORDER BY \"user\".id"); }
             
             else
-            { return searchData(getItems + "FROM employee JOIN \"user\" ON employee.user_id = \"user\".id WHERE \"user\".id = '" + variable + "' ORDER BY \"user\".id"); }
+            { return Search(getItems + "FROM employee JOIN \"user\" ON employee.user_id = \"user\".id WHERE \"user\".id = '" + variable + "' ORDER BY \"user\".id"); }
         }
         
         else if(search.equals("first_name")) {
             
             if(variable.isEmpty())
-            { return searchData(getItems + "FROM employee JOIN \"user\" ON employee.user_id = \"user\".id ORDER BY \"user\".first_name"); }
+            { return Search(getItems + "FROM employee JOIN \"user\" ON employee.user_id = \"user\".id ORDER BY \"user\".first_name"); }
         
             else
-            { return searchData(getItems + "FROM employee JOIN \"user\" ON employee.user_id = \"user\".id WHERE \"user\".first_name like '%" + variable + "%' ORDER BY \"user\".first_name"); }
+            { return Search(getItems + "FROM employee JOIN \"user\" ON employee.user_id = \"user\".id WHERE \"user\".first_name like '%" + variable + "%' ORDER BY \"user\".first_name"); }
         }
         
         else { return new DefaultTableModel(); }
@@ -46,30 +46,79 @@ public class Connector {
     
     public DefaultTableModel GetTrip(String variable, String search) {
         
-        //String getItems = "Select number, name, sales_price as price, start_date, duration, children_allowed, cancelled";
-        
         if(search.equals("number"))
         {
             if(variable.isEmpty())
-            { return searchData("SELECT * FROM product JOIN trip ON product.number = trip.product_number ORDER BY product.number"); }
+            { return Search("SELECT * FROM product JOIN trip ON product.number = trip.product_number ORDER BY product.number"); }
         
             else
-            { return searchData("SELECT * FROM product JOIN trip ON product.number = trip.product_number WHERE number = '" + variable + "' ORDER BY product.number"); }
+            { return Search("SELECT * FROM product JOIN trip ON product.number = trip.product_number WHERE number = '" + variable + "' ORDER BY product.number"); }
         }
         
         else if(search.equals("name"))
         {
             if(variable.isEmpty())
-            { return searchData("SELECT * FROM product JOIN trip ON product.number = trip.product_number ORDER BY product.name"); }
+            { return Search("SELECT * FROM product JOIN trip ON product.number = trip.product_number ORDER BY product.name"); }
         
             else
-            { return searchData("SELECT * FROM product JOIN trip ON product.number = trip.product_number WHERE name LIKE '%" + variable + "%' ORDER BY product.name"); }
+            { return Search("SELECT * FROM product JOIN trip ON product.number = trip.product_number WHERE name LIKE '%" + variable + "%' ORDER BY product.name"); }
         }
         
         else { return new DefaultTableModel(); }
     }
     
-    private DefaultTableModel searchData(String query) {
+    public DefaultTableModel GetExcursion(String variable, String search) {
+        
+        if(search.equals("excursion"))
+        {
+            if(variable.isEmpty())
+            {
+                return Search("SELECT * FROM excursion AS e"
+                        + " JOIN trip_excursion AS c ON e.product_number = excursion_number"
+                        + " JOIN trip AS t ON trip_number = t.product_number"
+                        + " JOIN product as p1 ON e.product_number = p1.number"
+                        + " JOIN product as p2 ON t.product_number = p2.number"
+                        + " ORDER BY e.product_number");
+            }
+        
+            else
+            {
+                return Search("SELECT * FROM excursion AS e"
+                        + " JOIN trip_excursion AS c ON e.product_number = excursion_number"
+                        + " JOIN trip AS t ON trip_number = t.product_number"
+                        + " JOIN product as p1 ON e.product_number = p1.number"
+                        + " JOIN product as p2 ON t.product_number = p2.number"
+                        + " WHERE e.product_number = '" + variable + "'");
+            }
+        }
+        
+        else if(search.equals("trip"))
+        {
+            if(variable.isEmpty())
+            {
+                return Search("SELECT * FROM excursion AS e"
+                        + " JOIN trip_excursion AS c ON e.product_number = excursion_number"
+                        + " JOIN trip AS t ON trip_number = t.product_number"
+                        + " JOIN product as p1 ON e.product_number = p1.number"
+                        + " JOIN product as p2 ON t.product_number = p2.number"
+                        + " ORDER BY t.product_number");
+            }
+        
+            else
+            {
+                return Search("SELECT * FROM excursion AS e"
+                        + " JOIN trip_excursion AS c ON e.product_number = excursion_number"
+                        + " JOIN trip AS t ON trip_number = t.product_number"
+                        + " JOIN product as p1 ON e.product_number = p1.number"
+                        + " JOIN product as p2 ON t.product_number = p2.number"
+                        + " WHERE t.product_number = '" + variable + "'");
+            }
+        }
+        
+        else { return new DefaultTableModel(); }
+    }
+    
+    private DefaultTableModel Search(String query) {
         try {
             Class.forName(driver);
             Connection conn = DriverManager.getConnection(url, login, pass);
@@ -109,13 +158,13 @@ public class Connector {
         return new DefaultTableModel(data, columnNames);
     }
     
-    public boolean updateSelection(String table, String identifiër, ArrayList<String> values) {
+    public boolean Update(String table, String identifiër, ArrayList<String> values) {
         
         int counter = 0;
         
         if(table.equals("trip"))
         {
-            cud("UPDATE product SET "
+            CUD("UPDATE product SET "
                 + "name = '" + values.get(counter++) + "', "
                 + "image = '" + values.get(counter++) + "', "
                 + "description = '" + values.get(counter++) + "', "
@@ -125,7 +174,7 @@ public class Connector {
                 + "category_id = '" + values.get(counter++) + "' "
                 + "WHERE number = '" + identifiër + "'");
            
-            cud("UPDATE trip SET "
+            CUD("UPDATE trip SET "
                 + "duration = '" + values.get(counter++) + "', "
                 + "start_date = '" + values.get(counter++) + "', "
                 + "children_allowed = '" + values.get(counter++) + "', "
@@ -141,13 +190,13 @@ public class Connector {
         { return false; }
     }
     
-    public boolean CreateSelection(String table, ArrayList<String> values) {
+    public boolean Create(String table, ArrayList<String> values) {
         
         int counter = 0;
         
         if(table.equals("trip"))
         {
-            cud("INSERT INTO product VALUES('"
+            CUD("INSERT INTO product VALUES('"
                 + values.get(counter++) + "','"
                 + values.get(counter++) + "','"
                 + values.get(counter++) + "','"
@@ -156,7 +205,7 @@ public class Connector {
                 + values.get(counter++) + "','"
                 + values.get(counter++) + "')");
            
-            cud("INSERT INTO trip VALUES ("
+            CUD("INSERT INTO trip VALUES ("
                 + "(SELECT MAX(number) FROM product),'"
                 + values.get(counter++) + "','"
                 + values.get(counter++) + "','"
@@ -172,15 +221,15 @@ public class Connector {
         { return false; }
     }
     
-    public void deleteSelection(String table, String identifiër) {
+    public void Delete(String table, String identifiër) {
         if(table.equals("trip"))
         {
-            cud("DELETE FROM trip WHERE product_number = '" + identifiër + "'");
-            cud("DELETE FROM product WHERE number = '" + identifiër + "'");
+            CUD("DELETE FROM trip WHERE product_number = '" + identifiër + "'");
+            CUD("DELETE FROM product WHERE number = '" + identifiër + "'");
         }
     }
     
-    private void cud(String query) {
+    private void CUD(String query) {
         try {
             Class.forName(driver);
             Connection conn = DriverManager.getConnection(url, login, pass);
