@@ -7,7 +7,7 @@ import java.util.Vector;
 import java.util.ArrayList;
 
 public class Connector {
-    
+    //Hans heeft dit getyped
     String url = "jdbc:sqlserver://localhost; DatabaseName = outdoor_paradise";
     String login = "sa";
     String pass = "root";
