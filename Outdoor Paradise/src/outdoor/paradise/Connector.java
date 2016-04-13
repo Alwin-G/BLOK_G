@@ -7,10 +7,16 @@ import java.util.Vector;
 import java.util.ArrayList;
 
 public class Connector {
-    //Hans heeft dit getyped
-    String url = "jdbc:sqlserver://localhost; DatabaseName = outdoor_paradise";
+    //Connectieinfo Alwin
+    //String url = "jdbc:sqlserver://localhost; DatabaseName = outdoor_paradise";
+    //String login = "sa";
+    //String pass = "root";
+    //String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+    
+    //Connectieinfo Hans
+    String url = "jdbc:sqlserver://LENOVO-PC:1433; DatabaseName = outdoor_paradise";
     String login = "sa";
-    String pass = "root";
+    String pass = "admin";
     String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     
     public DefaultTableModel GetEmployee(String variable, String search) {
